@@ -1,0 +1,24 @@
+{
+  "name": "sushishop",
+  "version": "1.0.0",
+  "description": "web project 2020",
+  "main": "index.js",
+  "scripts": {
+    "test": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/IamLena/sushishop.git"
+  },
+  "author": "Luchina Lena",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/IamLena/sushishop/issues"
+  },
+  "homepage": "https://github.com/IamLena/sushishop#readme",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "express": "^4.17.1",
+    "nodemon": "^2.0.6"
+  }
+}
