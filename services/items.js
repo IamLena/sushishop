@@ -112,7 +112,24 @@ const itemService = {
 			callback(null, results[0]);
 		});
 	},
+	deleteItemById: (id, callback) => { //disable do not delete because of FK
+		pool.query(
+			`delete from items where id = '${id}'`,
+			(error, results, fields) => {
+				if (error) {
+					return callback(error);
+				}
+				return callback(null, results);
+			}
+		);
+	},
 	updateItemById: (id, data, callback) => {
+		// this.getItemById(id, (error, results) => {
+		// 	if (error)
+		// 		return callback(error);
+		// 	this.addItem(?, callback)
+		// 	this.deleteItemById(id, callback)
+		// });
 		pool.query(`select id from category where name = '${data.category}'`, (err, res) => {
 			if (err)
 				return callback(err);
@@ -131,17 +148,6 @@ const itemService = {
 				return callback(null, results);
 			});
 		})
-	},
-	deleteItemById: (id, callback) => {
-		pool.query(
-			`delete from items where id = '${id}'`,
-			(error, results, fields) => {
-				if (error) {
-					return callback(error);
-				}
-				return callback(null, results);
-			}
-		);
 	}
 };
 
