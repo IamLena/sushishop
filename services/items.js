@@ -41,7 +41,7 @@ const itemService = {
 	},
 	getItems: (filters, callback) => {
 		let whereclauseflag = 0;
-		let query = `select * from items`; // join with categories
+		let query = `select * from items`; // join with categories as category_id, category_name
 		if (typeof filters.minprice !== 'undefined')
 		{
 			query += ` WHERE price > ${filters.minprice}`;
@@ -98,13 +98,50 @@ const itemService = {
 		});
 	},
 	getItemById: (id, callback) => {
-
+		pool.query(`select * from item where id = '${id}' inner join category on items.category_id = category.id`,
+		(err, results) => {
+			if (err)
+				return callback(err);
+			if (results.length == 0)
+			{
+				let e = new Error();
+				e.code = "NOTFOUND";
+				e.message = "no item with such id";
+				return callback(e);
+			}
+			callback(null, results[0]);
+		});
 	},
-	updateItemById: (id, callback) => {
-
+	updateItemById: (id, data, callback) => {
+		pool.query(`select id from category where name = '${data.category}'`, (err, res) => {
+			if (err)
+				return callback(err);
+			if (res.length == 0)
+			{
+				let e = new Error();
+				e.code = "NOTFOUND";
+				e.message = "no category with such name";
+				return callback(e);
+			}
+			data.category = res[0].id;
+			const newitem = new Item(data);
+			pool.query(`update items set ${newitem} where id = '${id}'`, (err, results) => {
+				if (err)
+					return callback(err);
+				return callback(null, results);
+			});
+		})
 	},
 	deleteItemById: (id, callback) => {
-
+		pool.query(
+			`delete from items where id = '${id}'`,
+			(error, results, fields) => {
+				if (error) {
+					return callback(error);
+				}
+				return callback(null, results);
+			}
+		);
 	}
 };
 

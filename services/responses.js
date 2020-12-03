@@ -4,8 +4,8 @@ module.exports = {
 			data: m_data
 		});
 	},
-	nocontent_204: (res, location_path) => {
-		return res.status(204).location(location_path);
+	nocontent_204: (res) => {
+		return res.status(204);
 	},
 	bad_request_400: (res, error) => {
 		return res.status(400).json({
